@@ -1,0 +1,17 @@
+{
+	"liveSassCompile.settings.formats": [{
+		// expanded, compact, compressed, nested
+		"format": "expanded",
+		// scss转换后的后缀名
+		"extensionName": ".wxss",
+		"savePath": null
+	}],
+	"liveSassCompile.settings.excludeList": [
+		"**/node_modules/**",
+		".vscode/**",
+	],
+	// 不生成source-map
+	"liveSassCompile.settings.generateMap": false,
+	// 不生成autoprefix修复
+	"liveSassCompile.settings.autoprefix": null,
+}
