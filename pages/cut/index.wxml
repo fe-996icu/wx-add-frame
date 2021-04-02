@@ -1,0 +1,23 @@
+<!--index.wxml-->
+<view class="wrap">
+	<view class="operate-area">
+		<view class="editor-box" style="{{editorBoxStyle}}">
+			<image src="{{img}}" class="img" />
+			<view class="btn-group">
+				<view class="btn btn-top-left"></view>
+				<view class="btn btn-top"></view>
+				<view class="btn btn-top-right"></view>
+				<view class="btn btn-right"></view>
+				<view class="btn btn-bottom-right"></view>
+				<view class="btn btn-bottom"></view>
+				<view class="btn btn-bottom-left"></view>
+				<view class="btn btn-left"></view>
+			</view>
+		</view>
+	</view>
+
+	<view class="toolbar-box">
+		<view class="btn-box"></view>
+		<view class="footer-box"></view>
+	</view>
+</view>

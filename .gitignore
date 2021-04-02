@@ -2,6 +2,7 @@
 node_modules
 miniprogram_npm
 *.wxss
+project.private.config.json
 
 
 # local env files
