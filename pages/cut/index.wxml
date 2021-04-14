@@ -2,8 +2,8 @@
 <view class="wrap">
 	<view class="operate-area">
 		<view class="editor-box" style="{{editorBoxStyle}}">
-			<image src="{{img}}" class="img" />
-			<view class="btn-group">
+			<image src="{{img}}" class="img" mode="aspectFit" />
+			<view class="btn-group" style="{{handleBoxStyle}}">
 				<view class="btn btn-top-left"></view>
 				<view class="btn btn-top"></view>
 				<view class="btn btn-top-right"></view>
