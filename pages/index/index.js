@@ -1,54 +1,60 @@
-
-// 获取应用实例
-const app = getApp()
-
+// 裁切对象
+var cropper
 Page({
-	data: {
-		motto: 'Hello World',
-		userInfo: {},
-		hasUserInfo: false,
-		canIUse: wx.canIUse('button.open-type.getUserInfo'),
-	},
-	// 事件处理函数
-	bindViewTap() {
-		wx.navigateTo({
-			url: '../logs/logs',
-		})
-	},
-	onLoad() {
-		if (app.globalData.userInfo) {
-			this.setData({
-				userInfo: app.globalData.userInfo,
-				hasUserInfo: true,
-			})
-		} else if (this.data.canIUse) {
-			// 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-			// 所以此处加入 callback 以防止这种情况
-			app.userInfoReadyCallback = res => {
-				this.setData({
-					userInfo: res.userInfo,
-					hasUserInfo: true,
-				})
-			}
-		} else {
-			// 在没有 open-type=getUserInfo 版本的兼容处理
-			wx.getUserInfo({
-				success: res => {
-					app.globalData.userInfo = res.userInfo
-					this.setData({
-						userInfo: res.userInfo,
-						hasUserInfo: true,
-					})
-				},
-			})
-		}
-	},
-	getUserInfo(e) {
-		console.log(e)
-		app.globalData.userInfo = e.detail.userInfo
+	/**
+	 * 页面的初始数据
+	 */
+	data: {},
+	/**
+	 * 生命周期函数--监听页面加载
+	 */
+	onLoad: function (options) {
+		options.imagePath = '../../assets/imgs/img.jpg';
+		// 根据标签id，获取到image-cropper对象，存储在全局变量cropper中
+		cropper = this.selectComponent("#my-cropper");
+
+		// 设置标签属性
 		this.setData({
-			userInfo: e.detail.userInfo,
-			hasUserInfo: true,
+			src: options.imagePath,
+			aspectRatio: 1,
+			isProportion: true,
+			quality: 1
 		})
 	},
+	btn1(e) {
+		// 图片宽高比值
+		this.setData({
+			aspectRatio: e.detail.value.toFixed(1)
+		})
+	},
+	btn2(e) {
+		// 图片质量
+		this.setData({
+			quality: e.detail.value.toFixed(1)
+		})
+	},
+	btn3() {
+		// 打开等比缩放
+		this.setData({
+			isProportion: true
+		})
+	},
+	btn4() {
+		// 关闭等比缩放
+		this.setData({
+			isProportion: false
+		})
+	},
+	btn5() {
+		// 调用image-cropper对象的getResults函数，获取裁剪参数
+		cropper.getResults(res => {
+			console.log(res)
+		})
+	},
+	btn6() {
+		// 调用image-cropper对象的getImagePath函数，获取裁剪后图片的地址
+		cropper.getImagePath(res => {
+			console.log(res)
+		})
+	}
 })

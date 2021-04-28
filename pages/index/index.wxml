@@ -1,14 +1,19 @@
-<!--index.wxml-->
-<view class="container">
-	<view class="userinfo">
-		<button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称
-		</button>
-		<block wx:else>
-			<image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-			<text class="userinfo-nickname">{{userInfo.nickName}}</text>
-		</block>
+<!-- 裁剪框标签 -->
+<image-cropper id="my-cropper" src="{{src}}" aspectRatio="{{aspectRatio}}"
+		isProportion="{{isProportion}}" quality="{{quality}}">
+	<!-- 操作按钮 -->
+	<view style="position: absolute;bottom:30rpx;left:30rpx;">
+		<view class="white">裁剪框宽高比值</view>
+		<slider min="0.4" max="3" step="0.1" value="{{aspectRatio}}"
+				show-value="true" style="width:400rpx" bindchange="btn1"></slider>
+		<view class="white">裁剪图片质量</view>
+		<slider min="0.1" max="1" step="0.1" value="{{quality}}"
+				show-value="true" style="width:400rpx" bindchange="btn2"></slider>
+		<view style="display:flex">
+			<button class="black" bindtap="btn3">等比缩放</button>
+			<button class="black" bindtap="btn4">自由缩放</button>
+		</view>
+		<button class="black" bindtap="btn5">获取裁切参数</button>
+		<button class="black" bindtap="btn6">获取裁切图临时文件地址</button>
 	</view>
-	<view class="usermotto">
-		<text class="user-motto">{{motto}}</text>
-	</view>
-</view>
+</image-cropper>
