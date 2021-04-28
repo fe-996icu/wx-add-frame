@@ -16,33 +16,6 @@ Page({
 		// 设置标签属性
 		this.setData({
 			src: options.imagePath,
-			aspectRatio: 1,
-			isProportion: true,
-			quality: 1
-		})
-	},
-	btn1(e) {
-		// 图片宽高比值
-		this.setData({
-			aspectRatio: e.detail.value.toFixed(1)
-		})
-	},
-	btn2(e) {
-		// 图片质量
-		this.setData({
-			quality: e.detail.value.toFixed(1)
-		})
-	},
-	btn3() {
-		// 打开等比缩放
-		this.setData({
-			isProportion: true
-		})
-	},
-	btn4() {
-		// 关闭等比缩放
-		this.setData({
-			isProportion: false
 		})
 	},
 	btn5() {
@@ -56,5 +29,16 @@ Page({
 		cropper.getImagePath(res => {
 			console.log(res)
 		})
-	}
+	},
+	onChoose(){
+		wx.chooseImage({
+			success: (res)=>{
+				console.log('选图结果：', res)
+
+				this.setData({
+					src: res.tempFilePaths[0],
+				});
+			},
+		});
+	},
 })
