@@ -59,7 +59,12 @@ Component({
 					_quality: newVal
 				})
 			}
-		}
+		},
+		// 底部预留区域，rpx单位
+		bottomAreaHeight: {
+			type: Number,
+			value: 100,
+		},
 	},
 
 	/**
@@ -157,7 +162,7 @@ Component({
 					let systemInfo = e
 					systemInfo.rpxPxRatio = 750 / systemInfo.windowWidth
 					systemInfo.windowWidthRpx = systemInfo.windowWidth * systemInfo.rpxPxRatio
-					systemInfo.windowHeightRpx = systemInfo.windowHeight * systemInfo.rpxPxRatio - 100
+					systemInfo.windowHeightRpx = systemInfo.windowHeight * systemInfo.rpxPxRatio - that.data.bottomAreaHeight
 					that.setData({
 						_systemInfo: systemInfo
 					})
@@ -213,7 +218,7 @@ Component({
 						}
 					}
 					that.setData({
-						canvas: canvas
+						canvas:canvas,
 					})
 					//            原图路径                       原图宽                   原图高                       canvas宽     canvas高
 					ctx.drawImage(originalImageInfo.path, 0, 0, originalImageInfo.width, originalImageInfo.height, 0, 0, canvas.width, canvas.height);
@@ -910,7 +915,11 @@ Component({
 				}, that)
 			}, 100) //延迟时间 这里是0.1秒
 
-		}
+		},
 
+		/**设置旋转角度 */
+		setRotate(deg) {
+			// this.setData();
+		},
 	}
 })
