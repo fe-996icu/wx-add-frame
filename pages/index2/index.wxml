@@ -1,18 +1,15 @@
 <!-- 裁剪框标签 -->
 <view class="my-area">
-	<image-cropper id="my-cropper" src="{{src}}" quality="1"
-			bind:size-change="onImageSizeInit"></image-cropper>
-
-	<image-rotate id="imgRotate" src="{{src}}" rect-location="{{imageRectLocation}}" />
+	<image class="preview-image" src="{{src}}" mode="aspectFit"></image>
 </view>
 
 <view class="toolbar-box">
-	<view class="btn-box">
+	<view class="btn-box" style="display: none;">
 		<view class="rotate-sub-menus sub-menus">
 			<view class="btn btn-original" hover-class="hover"
 					data-num="0" bindtap="onRotate">原图</view>
 			<view class="btn btn-left90" hover-class="hover"
-					data-num="-90" bindtap="onRotate">向左90°</view>
+					data-num="180" bindtap="onRotate">向左90°</view>
 			<view class="btn btn-right90" hover-class="hover"
 					data-num="90" bindtap="onRotate">向右90°</view>
 			<view class="btn btn-horizontal-mirro" hover-class="hover"
@@ -22,7 +19,7 @@
 		</view>
 	</view>
 	<view class="footer-box">
-		<view class="btn btn-cut active" hover-class="hover">裁剪</view>
+		<view class="btn btn-cut" hover-class="hover" bindtap="onGotoCut">裁剪</view>
 		<view class="btn btn-rotate" hover-class="hover">旋转</view>
 		<view class="btn btn-highlight" hover-class="hover">亮度</view>
 		<view class="btn btn-filter" hover-class="hover">滤镜</view>

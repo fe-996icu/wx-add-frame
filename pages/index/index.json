@@ -1,5 +1,6 @@
 {
 	"usingComponents": {
+		"image-rotate": "/component/image-rotate/image-rotate",
 		"image-cropper": "/component/image-cropper/index"
 	}
 }

@@ -1,6 +1,8 @@
 {
 	"pages": [
+		"pages/index2/index",
 		"pages/cut/index",
+		"pages/cropper/cropper",
 		"pages/index/index"
 	],
 	"window": {
@@ -9,6 +11,5 @@
 		"navigationBarTitleText": "Weixin",
 		"navigationBarTextStyle": "black"
 	},
-	"style": "v2",
 	"sitemapLocation": "sitemap.json"
 }

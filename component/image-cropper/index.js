@@ -2,7 +2,11 @@
  * @author GuoNanLin
  * @date 2020-11-06
  */
+import computedBehavior from 'miniprogram-computed'
+
 Component({
+	behaviors: [computedBehavior],
+
 	options: {
 		pureDataPattern: /^_/ // 指定所有 _ 开头的数据字段为纯数据字段
 	},
@@ -64,6 +68,13 @@ Component({
 		bottomAreaHeight: {
 			type: Number,
 			value: 100,
+		},
+	},
+
+	watch: {
+		viewImagesLocation(size){
+			console.log('watch', size);
+			this.triggerEvent('size-change', size);
 		},
 	},
 
@@ -195,14 +206,24 @@ Component({
 			wx.getImageInfo({
 				src: that.data.imagePath,
 				success(res) {
+					// 画原图到canvas
+					let ctx = that.data._ctx
+					if(that.data._originalImageInfo){
+					    // ctx.translate(0,0)
+					  	// ctx.rotate(0*Math.PI/180)
+
+						// ctx.clearRect(0, 0, that.data._originalImageInfo.width, that.data._originalImageInfo.height);
+
+					}
+
+
 					// 设置原图信息
 					let originalImageInfo = res
 					that.setData({
-						_originalImageInfo: originalImageInfo
+						_originalImageInfo: originalImageInfo,
+						// _ctx: wx.createCanvasContext('image-cropper-canvas-id', that)
 					})
 
-					// 画原图到canvas
-					let ctx = that.data._ctx
 					let oWoHRate = originalImageInfo.width / originalImageInfo.height
 					let max = 4000
 					let canvas
@@ -220,9 +241,58 @@ Component({
 					that.setData({
 						canvas:canvas,
 					})
+					//   ctx.translate(originalImageInfo.width/2,originalImageInfo.height/2)
+					//   ctx.translate(originalImageInfo.width/2,-originalImageInfo.height/2)
+					//   ctx.rotate(45*Math.PI/180)
+
+
+					//     ctx.translate(0,0)
+					//   ctx.rotate(0*Math.PI/180)
+
+					// // 90度
+					// that.setData({
+					// 	canvas: {
+					// 		width: originalImageInfo.height,
+					// 		height: originalImageInfo.width
+					// 	},
+					// });
+					//   ctx.translate(originalImageInfo.height,0)
+					//   ctx.rotate(90*Math.PI/180)
+
+					// 180度
+					//     ctx.translate(originalImageInfo.width,originalImageInfo.height)
+					//   ctx.rotate(180*Math.PI/180)
+
+					// 270度
+					// that.setData({
+					// 	canvas: {
+					// 		width: originalImageInfo.height,
+					// 		height: originalImageInfo.width
+					// 	},
+					// });
+					//   ctx.translate(0,originalImageInfo.width)
+					//   ctx.rotate(270*Math.PI/180)
+
+
+					// ctx.draw(true)
+					// ctx.translate(0,0)
+					// ctx.rotate(0)
+					// ctx.clearRect(0, 0, originalImageInfo.width, originalImageInfo.height);
+					// ctx.restore();
+
 					//            原图路径                       原图宽                   原图高                       canvas宽     canvas高
 					ctx.drawImage(originalImageInfo.path, 0, 0, originalImageInfo.width, originalImageInfo.height, 0, 0, canvas.width, canvas.height);
 					ctx.draw(false)
+
+					console.log(wx.ctx = ctx)
+					console.log(wx.img = originalImageInfo)
+					//   wx.previewImage({
+					//   urls: [originalImageInfo.path]
+					// urls: ['../../assets/imgs/img.jpg']
+					//   })
+
+
+
 
 					// 当 viewWidth = 650 时,及图片两边留50黑边时
 					let blackWidth = 40
@@ -234,7 +304,6 @@ Component({
 
 						that._setProportionCode(viewWidth, viewHeight)
 						that._cropLocationCenter(viewWidth, viewHeight)
-
 						that.setData({
 							viewImagesLocation: {
 								width: viewWidth,
@@ -864,14 +933,52 @@ Component({
 				}
 			})
 		},
+		/**导出canvas中的图片 */
+		_exportCanvasImage(options){
+			return new Promise((resolve, rejct)=>{
+				wx.showLoading({
+					title: '请稍后',
+					mask: true
+				})
+
+				setTimeout(() => {
+					const {
+						// canvas截图的开始坐标点
+						x=0,
+						y=0,
+						// canvas截图的尺寸
+						width,
+						height,
+					} = options;
+					const { _quality } = this.data;
+
+					wx.canvasToTempFilePath({
+						x,
+						y,
+						width,
+						height,
+						destWidth: width,
+						destHeight: height,
+						canvasId: 'image-cropper-canvas-id',
+						fileType: 'png',
+						quality: _quality,
+						success(res) {
+							wx.hideLoading()
+							resolve(res.tempFilePath);
+						},
+						fail(err) {
+							console.log(err)
+							wx.hideLoading()
+							reject(err);
+						},
+					}, this)
+				}, 100) //延迟时间 这里是0.1秒
+			});
+		},
 		/**
 		 * 获取裁切后的图片路径
 		 */
 		getImagePath(getCallback) {
-			wx.showLoading({
-				title: '请稍后',
-				mask: true
-			})
 			let that = this;
 
 			let crop = JSON.parse(JSON.stringify(that.data.crop))
@@ -891,35 +998,60 @@ Component({
 			let canvasCropWidth = crop.width * cwOwRate
 			let canvasCropHeight = crop.height * cwOwRate
 
-			setTimeout(() => {
-				wx.canvasToTempFilePath({
-					x: canvasCropLeft,
-					y: canvasCropTop,
-					width: canvasCropWidth,
-					height: canvasCropHeight,
-					destWidth: canvasCropWidth,
-					destHeight: canvasCropHeight,
-					canvasId: 'image-cropper-canvas-id',
-					fileType: 'jpg',
-					quality: that.data._quality,
-					success(res) {
-						wx.hideLoading()
-						getCallback({
-							path: res.tempFilePath
-						});
-					},
-					fail(e) {
-						console.log(e)
-						wx.hideLoading()
-					}
-				}, that)
-			}, 100) //延迟时间 这里是0.1秒
-
+			this._exportCanvasImage({
+				x: canvasCropLeft,
+				y: canvasCropTop,
+				width: canvasCropWidth,
+				height: canvasCropHeight,
+			}).then(path=>{
+				getCallback({
+					path,
+				});
+			});
 		},
 
 		/**设置旋转角度 */
 		setRotate(deg) {
-			// this.setData();
+			console.log('deg,', deg)
+			return new Promise(resolve=>{
+				const {
+					_originalImageInfo: originalImageInfo,
+					_ctx: ctx,
+					canvas,
+				} = this.data;
+
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+				if(deg==90){
+					// 90度
+					this.setData({
+						canvas: {
+							width: originalImageInfo.height,
+							height: originalImageInfo.width
+						},
+					});
+					ctx.translate(originalImageInfo.height,0)
+					ctx.rotate(90*Math.PI/180)
+					//            原图路径                       原图宽                   原图高                       canvas宽     canvas高
+					ctx.drawImage(originalImageInfo.path, 0, 0, originalImageInfo.width, originalImageInfo.height, 0, 0, canvas.width, canvas.height);
+					ctx.draw(false)
+				}else if(180==deg){
+
+					// 180度
+					    ctx.translate(originalImageInfo.width,originalImageInfo.height)
+					  ctx.rotate(180*Math.PI/180)
+
+				}
+
+				this._exportCanvasImage({
+					x: 0,
+					y: 0,
+					width: this.data.canvas.width,
+					height: this.data.canvas.height,
+				}).then(path=>{
+					resolve(path);
+				});
+			});
 		},
 	}
 })

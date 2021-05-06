@@ -1,17 +1,12 @@
 import regeneratorRuntime from 'regenerator-runtime'
-import computedBehavior from 'miniprogram-computed'
 
 // 裁切对象
 var _cropper
 Page({
-	behaviors: [computedBehavior],
-
 	/**
 	 * 页面的初始数据
 	 */
-	data: {
-		imageRectLocation: null,
-	},
+	data: {},
 	/**
 	 * 生命周期函数--监听页面加载
 	 */
@@ -28,55 +23,30 @@ Page({
 		})
 	},
 
-	computed: {
-		viewImageStyle(data){
-			if(data.imageRectLocation){
-				const { width, height, top, left, } = data.imageRectLocation;
-
-				return `
-					width: ${width}rpx;
-					height: ${height}rpx;
-					top: ${top}rpx;
-					left: ${left}rpx;
-				`;
-			}
-		},
-	},
-
-	onImageSizeInit(data){
-		console.log('size', data.detail);
-
-		this.setData({
-			imageRectLocation: data.detail
-		});
-	},
-
 	async onRotate(ev){
 		const { num } = ev.target.dataset;
-		// const path = await _cropper.setRotate(num-0);
+		const path = await _cropper.setRotate(num-0);
 
-		// console.log(path)
-		// // wx.previewImage({
-		// // 	urls: [path]
-		// // });
-
-
-		// this.setData({
-		// 	src: path
+		console.log(path)
+		// wx.previewImage({
+		// 	urls: [path]
 		// });
-		const comp = this.selectComponent('#imgRotate');
-		comp.setRotate(num);
-	},
-	async onHorizontalReverse(){
-		const comp = this.selectComponent('#imgRotate');
-		const path = await comp.getImagePath();
 
-		wx.previewImage({
-			urls: [path]
+
+		this.setData({
+			src: path
 		});
 	},
-	onVerticalReverse(){
-		this.onHorizontalReverse();
+
+	onGotoCut(){
+		wx.navigateTo({
+			url: `/pages/cropper/cropper?imgSrc=${this.data.src}`,
+			events: {
+				cut: (path)=>{
+					console.log(path, 'path......')
+				},
+			},
+		});
 	},
 
 	btn5() {

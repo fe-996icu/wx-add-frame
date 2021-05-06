@@ -1,0 +1,4 @@
+<!-- 图片旋转组件 -->
+<image class="view-image" src="{{src}}" style="{{viewImageStyle}}"></image>
+
+<canvas canvas-id="myCanvas" class="my-canvas" style="{{canvasStyle}}"></canvas>

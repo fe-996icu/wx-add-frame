@@ -1,16 +1,16 @@
 <!-- <canvas  id="image-cropper-canvas" type="2d" style="position:fixed;left:800rpx;width: {{canvas.width}}px;height:{{canvas.height}}px;"></canvas> -->
 
-<canvas  canvas-id="image-cropper-canvas-id" style="position:fixed;left:800rpx;width: {{canvas.width}}px;height:{{canvas.height}}px;"></canvas>
+<canvas  canvas-id="image-cropper-canvas-id" style="position:fixed;left:800rpx;width: {{canvas.width}}px;height:{{canvas.height}}px; left: 0;background-color: yellow;"></canvas>
 
-<view class="crop_image_content">
+<view class="crop_image_content" style="display: block">
   <!-- 原图 灰底 -->
-  <image class="cropimg1" 
-    style="width:{{viewImagesLocation.width}}rpx;height:{{viewImagesLocation.height}}rpx;top:{{viewImagesLocation.top}}rpx;left:{{viewImagesLocation.left}}rpx;" 
+  <image class="cropimg1"
+    style="width:{{viewImagesLocation.width}}rpx;height:{{viewImagesLocation.height}}rpx;top:{{viewImagesLocation.top}}rpx;left:{{viewImagesLocation.left}}rpx;"
     src="{{ imagePath }}"/>
 
   <!-- 原图 裁剪框范围 -->
-  <image class="cropimg2" 
-    style="width:{{viewImagesLocation.width}}rpx;height:{{viewImagesLocation.height}}rpx;top:{{viewImagesLocation.top}}rpx;left:{{viewImagesLocation.left}}rpx;clip: rect({{crop.top}}rpx, {{crop.right}}rpx, {{crop.bottom}}rpx, {{crop.left}}rpx);" 
+  <image class="cropimg2"
+    style="width:{{viewImagesLocation.width}}rpx;height:{{viewImagesLocation.height}}rpx;top:{{viewImagesLocation.top}}rpx;left:{{viewImagesLocation.left}}rpx;clip: rect({{crop.top}}rpx, {{crop.right}}rpx, {{crop.bottom}}rpx, {{crop.left}}rpx);"
     src="{{ imagePath }}"/>
 
   <!-- 裁剪框边框 -->
@@ -41,4 +41,4 @@
       </view>
   </view>
   <slot></slot>
-</view> 
+</view>

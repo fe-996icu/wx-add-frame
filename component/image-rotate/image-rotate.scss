@@ -1,0 +1,18 @@
+/*
+ * @Author: zhangjianzhong
+ * @Date: 2021-05-01 15:25:32
+ * @Last Modified by: zhangjianzhong
+ * @Last Modified time: 2021-05-01 16:35:22
+ */
+.view-image{
+	position: absolute;
+	transition: all 0.3s;
+}
+
+.my-canvas{
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 99999;
+	background-color: rgba(0, 128, 0, 0.253);
+}
